@@ -25,12 +25,19 @@ CREATE TABLE publications(
     creation_time datetime NOT NULL,
     title varchar(122) NOT NULL,
     description varchar(255) NOT NULL,
-    category_id int NOT NULL,
+    publication_categories int NOT NULL,
     creator_id int NOT NULL,
     price int NOT NULL,
     is_sell tinyint(1),
-    FOREIGN KEY (category_id) REFERENCES categories(id),
     FOREIGN KEY (creator_id) REFERENCES users(id)
+);
+
+CREATE TABLE publications_categories(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    category_id int NOT NULL,
+    publication_id int NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (publication_id) REFERENCES publications(id) 
 );
 
 CREATE TABLE comments(
@@ -55,3 +62,11 @@ CREATE TABLE publications_files(
     FOREIGN KEY (publication_id) REFERENCES publications(id),
     FOREIGN KEY (file_id) REFERENCES files(id)
 );
+
+INSERT into categories (name, symbol_code, creation_time) 
+VALUES ('Дом', 'house', NOW()),
+('Электроника', 'electronics', NOW()),
+('Одежда', 'clothes', NOW()),
+('Спорт/отдых', 'sport', NOW()),
+('Авто', 'auto', NOW()),
+('Книги', 'books', NOW());
