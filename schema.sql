@@ -16,7 +16,7 @@ CREATE TABLE categories(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
     name varchar(64) NOT NULL,
-    img_category varchar(128),
+    img varchar(128),
     symbol_code varchar(122) NOT NULL
 );
 
@@ -43,24 +43,18 @@ CREATE TABLE publications_categories(
 CREATE TABLE comments(
     id int PRIMARY KEY AUTO_INCREMENT,
     creation_time datetime NOT NULL,
-    text varchar(256) NOT NULL,
+    text text NOT NULL,
     user_id int NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE files(
-    id int PRIMARY KEY AUTO_INCREMENT,
-    creation_time datetime NOT NULL,
-    name varchar(122) NOT NULL,
-    path varchar(512) NOT NULL
-);
-
 CREATE TABLE publications_files(
     id int PRIMARY KEY AUTO_INCREMENT,
+    creation_time datetime NOT NULL,
     publication_id int NOT NULL,
-    file_id int NOT NULL,
-    FOREIGN KEY (publication_id) REFERENCES publications(id),
-    FOREIGN KEY (file_id) REFERENCES files(id)
+    name varchar(122) NOT NULL,
+    path varchar(512) NOT NULL,
+    FOREIGN KEY (publication_id) REFERENCES publications(id)
 );
 
 INSERT into categories (name, symbol_code, creation_time) 
