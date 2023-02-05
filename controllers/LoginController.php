@@ -10,4 +10,13 @@ class LoginController extends Controller
     {
         return $this->render('login');
     }
+
+    public function actionAuth(){
+        echo 'action auth';
+    }
+
+    public function actionVk()
+    {
+        echo 'actionvk';
+    }
 }
