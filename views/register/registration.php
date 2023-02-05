@@ -1,46 +1,52 @@
+<?php
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+?>
+<link rel="stylesheet" href="/css/style.min.css">
 <main class="page-content">
     <section class="sign-up">
         <h1 class="visually-hidden">Регистрация</h1>
-        <form class="sign-up__form form" action="#" method="post" enctype="multipart/form-data" autocomplete="off">
-            <div class="sign-up__title">
-                <h2>Регистрация</h2>
-                <a class="sign-up__link" href="login.html">Вход</a>
-            </div>
-            <div class="sign-up__avatar-container js-preview-container">
-                <div class="sign-up__avatar js-preview"></div>
-                <div class="sign-up__field-avatar">
-                    <input type="file" id="avatar" name="avatar" class="visually-hidden js-file-field">
-                    <label for="avatar">
-                        <span class="sign-up__text-upload">Загрузить аватар…</span>
-                        <span class="sign-up__text-another">Загрузить другой аватар…</span>
-                    </label>
-                </div>
-            </div>
-            <div class="form__field sign-up__field">
-                <input type="text" name="user-name" id="user-name" class="js-field" required>
-                <label for="user-name">Имя и фамилия</label>
-                <span>Обязательное поле</span>
-            </div>
-            <div class="form__field sign-up__field">
-                <input type="email" name="user-email" id="user-email" class="js-field" required>
-                <label for="user-email">Эл. почта</label>
-                <span>Неверный email</span>
-            </div>
-            <div class="form__field sign-up__field">
-                <input type="password" name="user-password" id="user-password" class="js-field" required>
-                <label for="user-password">Пароль</label>
-                <span>Обязательное поле</span>
-            </div>
-            <div class="form__field sign-up__field">
-                <input type="password" name="user-password-again" id="user-password-again" class="js-field" required>
-                <label for="user-password-again">Пароль еще раз</label>
-                <span>Пароли не совпадают</span>
-            </div>
-            <button class="sign-up__button btn btn--medium js-button" type="submit" disabled>Создать аккаунт</button>
-            <a class="btn btn--small btn--flex btn--white" href="#">
-                Войти через
-                <span class="icon icon--vk"></span>
-            </a>
-        </form>
+        <?php $form = ActiveForm::begin(
+                [
+                        'id' => 'registerForm',
+                        'method' => 'post',
+                        'options' => [
+                                'class' => 'sign-up__form form',
+                                'enctype' => 'multipart/form-data',
+                                'autocomplete' => 'off'
+                        ],
+                        'errorCssClass' => 'form__field--invalid'
+                ]
+        );
+        ?>
+        <div class="sign-up__title">
+            <h2>Регистрация</h2>
+            <a class="sign-up__link" href="/login">Вход</a>
+        </div>
+        <div class="sign-up__avatar-container js-preview-container">
+            <div class="sign-up__avatar js-preview"></div>
+                <?=$form->field($registerForm, 'file',['options' => ['class' => 'sign-up__field-avatar'],
+                    'template' => "{input}<label for=\"avatar\"><span class=\"sign-up__text-upload\">Загрузить аватар…</span><span class=\"sign-up__text-another\">Загрузить другой аватар…</span></label>{error}",
+                'inputOptions' => ['id' => 'avatar','class' => 'visually-hidden js-file-field', 'type' => 'file']])?>
+        </div>
+        <div class="form__field sign-up__field">
+            <?=$form->field($registerForm, 'name',['errorOptions' => ['tag' => 'span']])->label()->textInput(['class' => 'js-field']);?>
+        </div>
+        <div class="form__field sign-up__field">
+            <?=$form->field($registerForm, 'email',['errorOptions' => ['tag' => 'span']])->label()->textInput(['class' => 'js-field']);?>
+        </div>
+        <div class="form__field sign-up__field">
+            <?=$form->field($registerForm, 'password',['errorOptions' => ['tag' => 'span']])->label()->passwordInput(['class' => 'js-field']);?>
+        </div>
+        <div class="form__field sign-up__field">
+            <?=$form->field($registerForm, 'repeatPassword',['errorOptions' => ['tag' => 'span']])->label()->passwordInput(['class' => 'js-field']);?>
+        </div>
+
+        <?= Html::submitButton('Создать аккаунт', ['class' => 'sign-up__button btn btn--medium js-button', 'disabled' => 'disabled']) ?>
+        <a class="btn btn--small btn--flex btn--white" href="#">
+            Войти через
+            <span class="icon icon--vk"></span>
+        </a>
+        <?php ActiveForm::end();?>
     </section>
 </main>
