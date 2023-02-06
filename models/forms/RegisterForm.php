@@ -30,7 +30,7 @@ class RegisterForm extends Model
         return [
             [['name', 'email', 'password', 'repeatPassword','file'], 'required'],
             [['name'], 'string', 'max' => 122,'min' => 6],
-            //['name', 'match', 'pattern' => ''],
+            ['name', 'match', 'pattern' => '/^[a-zA-Zа-яА-Я ]+$/'],
             [['password', 'repeatPassword'], 'string', 'min' => 6],
             [['email'], 'string', 'max' => 64],
             [['email'], 'unique', 'targetAttribute' => ['email' => 'email'], 'targetClass' => Users::class],
