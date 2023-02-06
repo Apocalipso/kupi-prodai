@@ -1,26 +1,41 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/** @var yii\web\View $this */
+/** @var app\models\Users $model */
+/** @var ActiveForm $form */
+?>
 <main class="page-content">
     <section class="login">
         <h1 class="visually-hidden">Логин</h1>
-        <form class="login__form form" action="#" method="post" enctype="multipart/form-data">
-            <div class="login__title">
-                <a class="login__link" href="sign-up.html">Регистрация</a>
-                <h2>Вход</h2>
-            </div>
-            <div class="form__field login__field">
-                <input type="email" name="user-email" id="user-email" class="js-field" required="">
-                <label for="user-email">Эл. почта</label>
-                <span>Обязательное поле</span>
-            </div>
-            <div class="form__field login__field">
-                <input type="password" name="user-password" id="user-password" class="js-field" required="">
-                <label for="user-password">Пароль</label>
-                <span>Обязательное поле</span>
-            </div>
-            <button class="login__button btn btn--medium js-button" type="submit" disabled="">Войти</button>
-            <a class="btn btn--small btn--flex btn--white" href="#">
-                Войти через
-                <span class="icon icon--vk"></span>
-            </a>
-        </form>
+
+        <?php $form = ActiveForm::begin(
+                [
+                    'id' => 'loginForm',
+                    'method' => 'post',
+                    'options' => [
+                        'class' => 'login__form form',
+                        'enctype' => 'multipart/form-data',
+                        'autocomplete' => 'off'
+                    ],
+                    'errorCssClass' => 'form__field--invalid'
+                ]
+        ); ?>
+        <div class="login__title">
+            <a class="login__link" href="/register">Регистрация</a>
+            <h2>Вход</h2>
+        </div>
+        <?= $form->field($loginForm, 'email',['errorOptions' => ['tag' => 'span'], 'options' =>['class' => 'form__field login__field']])->label()->textInput(['class' => 'js-field']);?>
+        <?= $form->field($loginForm, 'password',['errorOptions' => ['tag' => 'span'], 'options' =>['class' => 'form__field login__field']])->label()->textInput(['class' => 'js-field']);?>
+
+        <?= Html::submitButton('Войти', ['class' => 'login__button btn btn--medium js-button','disabled' => 'disabled']) ?>
+        <a class="btn btn--small btn--flex btn--white" href="/login/auth?authclient=vkontakte">
+            Войти через
+            <span class="icon icon--vk"></span>
+        </a>
+        <?php ActiveForm::end(); ?>
+
     </section>
 </main>

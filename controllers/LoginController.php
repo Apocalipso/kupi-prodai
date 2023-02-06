@@ -2,13 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\forms\LoginForm;
 use yii\web\Controller;
 
 class LoginController extends Controller
 {
     public function actionIndex()
     {
-        return $this->render('login');
+        $loginForm = new LoginForm();
+        return $this->render('login',[
+            'loginForm' => $loginForm,
+        ]);
     }
 
     public function actionAuth(){
