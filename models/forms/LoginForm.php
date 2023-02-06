@@ -9,6 +9,7 @@ use app\models\Users;
 
 class LoginForm extends Model
 {
+    public $user;
     public $email;
     public $password;
 

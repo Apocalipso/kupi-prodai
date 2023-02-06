@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
             <h2>Вход</h2>
         </div>
         <?= $form->field($loginForm, 'email',['errorOptions' => ['tag' => 'span'], 'options' =>['class' => 'form__field login__field']])->label()->textInput(['class' => 'js-field']);?>
-        <?= $form->field($loginForm, 'password',['errorOptions' => ['tag' => 'span'], 'options' =>['class' => 'form__field login__field']])->label()->textInput(['class' => 'js-field']);?>
+        <?= $form->field($loginForm, 'password',['errorOptions' => ['tag' => 'span'], 'options' =>['class' => 'form__field login__field']])->label()->passwordInput(['class' => 'js-field']);?>
 
         <?= Html::submitButton('Войти', ['class' => 'login__button btn btn--medium js-button','disabled' => 'disabled']) ?>
         <a class="btn btn--small btn--flex btn--white" href="/login/auth?authclient=vkontakte">
