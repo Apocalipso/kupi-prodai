@@ -7,6 +7,7 @@ use yii\web\Controller;
 use app\models\forms\RegisterForm;
 use yii\base\Exception;
 use yii\web\UploadedFile;
+use app\services\UserCreateService;
 
 
 class RegisterController extends Controller
@@ -17,7 +18,10 @@ class RegisterController extends Controller
         if ($registerForm->load(Yii::$app->request->post())) {
             $registerForm->file = UploadedFile::getInstance($registerForm, 'file');
             if ($registerForm->validate()) {
-                return $this->redirect('https://ya.ru', 301);
+
+                $service  = new UserCreateService();
+                $service ->create($registerForm);
+                //return $this->redirect('/login', 301);
 
             }
         }
