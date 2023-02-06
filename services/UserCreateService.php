@@ -41,5 +41,15 @@ class UserCreateService
         return $user->save();
     }
 
+    public function createVk($userAttributes){
+        $newUser = new Users();
+        $newUser->creation_time = date("Y-m-d H:i:s");
+        $newUser->name = $userAttributes["first_name"] . ' ' . $userAttributes["last_name"];
+        $newUser->email = $userAttributes["email"];
 
+        $newUser->password = Yii::$app->getSecurity()->generatePasswordHash('asdfgh');
+        $newUser->vk_id = $userAttributes["user_id"];
+        $newUser->save();
+        return $newUser;
+    }
 }

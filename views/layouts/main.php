@@ -17,7 +17,7 @@ $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('/img/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,24 +27,23 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= Html::encode($this->title) ?></title>
-    <link rel="icon" href="../img/favicon.ico">
     <?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
-<header class="header">
+<header class="header <?php if(!Yii::$app->user->isGuest) echo 'header--logged'?>">
   <div class="header__wrapper">
     <a class="header__logo logo" href="main.html">
-      <img src="img/logo.svg" width="179" height="34" alt="Логотип Куплю Продам">
+      <img src="/img/logo.svg" width="179" height="34" alt="Логотип Куплю Продам">
     </a>
     <nav class="header__user-menu">
       <ul class="header__list">
         <li class="header__item">
-          <a href="my-tickets.html">Публикации</a>
+          <a href="/my">Публикации</a>
         </li>
         <li class="header__item">
-          <a href="comments.html">Комментарии</a>
+          <a href="/comments">Комментарии</a>
         </li>
       </ul>
     </nav>
@@ -53,10 +52,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
       <div class="search__icon"></div>
       <div class="search__close-btn"></div>
     </form>
-    <a class="header__avatar avatar" href="#">
-      <img src="img/avatar.jpg" srcset="img/avatar@2x.jpg 2x" alt="Аватар пользователя">
-    </a>
-    <a class="header__input" href="sign-up.html">Вход и регистрация</a>
+    <?php if(Yii::$app->user->getIdentity()):?>
+        <a class="header__avatar avatar" href="/site/logout">
+          <img src="<?=Yii::$app->user->getIdentity()->avatar?>" alt="Аватар пользователя">
+        </a>
+    <?php endif;?>
+    <a class="header__input" href="/login">Вход и регистрация</a>
   </div>
 </header>
 
@@ -80,10 +81,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <div class="page-footer__col">
       <ul class="page-footer__nav">
         <li>
-          <a href="sign-up.html">Вход и регистрация</a>
+          <a href="/login">Вход и регистрация</a>
         </li>
         <li>
-          <a href="new-ticket.html">Создать объявление</a>
+          <a href="/offers/add">Создать объявление</a>
         </li>
       </ul>
     </div>
