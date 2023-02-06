@@ -20,8 +20,9 @@ class RegisterController extends Controller
             if ($registerForm->validate()) {
 
                 $service  = new UserCreateService();
-                $service ->create($registerForm);
-                //return $this->redirect('/login', 301);
+                $avatarPath = $service->saveUploadFile($registerForm->file);
+                $service -> create($registerForm, $avatarPath);
+                return $this->redirect('/login', 301);
 
             }
         }
