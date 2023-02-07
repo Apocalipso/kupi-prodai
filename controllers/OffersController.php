@@ -10,4 +10,9 @@ class OffersController extends Controller
     {
         return $this->render('offers');
     }
+
+    public function actionAdd()
+    {
+        return $this->render('add');
+    }
 }
