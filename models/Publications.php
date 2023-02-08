@@ -22,6 +22,11 @@ use Yii;
  */
 class Publications extends \yii\db\ActiveRecord
 {
+
+    public const PUBLICATION_TYPE = [
+        'buy' => 'КУПЛЮ',
+        'sell' => 'ПРОДАМ',
+    ];
     /**
      * {@inheritdoc}
      */

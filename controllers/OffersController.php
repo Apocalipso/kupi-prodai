@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use yii;
 use yii\web\Controller;
+use app\models\forms\OfferCreateForm;
+use yii\web\UploadedFile;
 
 class OffersController extends Controller
 {
@@ -13,6 +16,17 @@ class OffersController extends Controller
 
     public function actionAdd()
     {
-        return $this->render('add');
+        $offerForm = new OfferCreateForm();
+        Yii::debug($offerForm);
+        if ($offerForm->load(Yii::$app->request->post())) {
+            $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
+            Yii::debug($offerForm);
+            if ($offerForm->validate()) {
+
+            }
+        }
+        return $this->render('add',[
+            'offerForm' => $offerForm,
+        ]);
     }
 }

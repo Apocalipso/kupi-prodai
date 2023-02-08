@@ -7,8 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Publications;
 
 class SiteController extends Controller
 {
@@ -61,7 +60,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $allPublication = Publications::find()->all();
+        if (count($allPublication) === 0){
+            return $this->render('index-empty');
+        }
+
+        return $this->render('index', [
+            'allPublication' => $allPublication,
+        ]);
     }
 
     /**

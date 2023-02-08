@@ -1,64 +1,73 @@
+<?php
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+use app\models\Categories;
+use yii\helpers\ArrayHelper;
+use app\models\Publications;
+$publication_categories = ArrayHelper::map(Categories::find()->all(), 'id', 'name');
+?>
+
 <main class="page-content">
     <section class="ticket-form">
         <div class="ticket-form__wrapper">
             <h1 class="ticket-form__title">Новая публикация</h1>
             <div class="ticket-form__tile">
-                <form class="ticket-form__form form" action="#" method="post" enctype="multipart/form-data" autocomplete="off">
-                    <div class="ticket-form__avatar-container js-preview-container">
-                        <div class="ticket-form__avatar js-preview"></div>
-                        <div class="ticket-form__field-avatar">
-                            <input type="file" id="avatar" name="avatar" class="visually-hidden js-file-field">
-                            <label for="avatar">
-                                <span class="ticket-form__text-upload">Загрузить фото…</span>
-                                <span class="ticket-form__text-another">Загрузить другое фото…</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="ticket-form__content">
-                        <div class="ticket-form__row">
-                            <div class="form__field">
-                                <input type="text" name="ticket-name" id="ticket-name" class="js-field" required="">
-                                <label for="ticket-name">Название</label>
-                                <span>Обязательное поле</span>
-                            </div>
-                        </div>
-                        <div class="ticket-form__row">
-                            <div class="form__field">
-                                <textarea name="comment" id="comment-field" cols="30" rows="10" class="js-field"></textarea>
-                                <label for="comment-field">Описание</label>
-                                <span>Обязательное поле</span>
-                            </div>
-                        </div>
-                        <div class="ticket-form__row">
-                            <select name="category" id="category-field" data-label="Выбрать категорию публикации" class="form__select js-multiple-select">
-                                <option value="1">Дом</option>
-                                <option value="2">Спорт и отдых</option>
-                                <option value="3">Авто</option>
-                                <option value="4">Электроника</option>
-                            </select>
-                        </div>
-                        <div class="ticket-form__row">
-                            <div class="form__field form__field--price">
-                                <input type="number" name="price" id="price-field" class="js-field js-price" min="1" required="">
-                                <label for="price-field">Цена</label>
-                                <span>Обязательное поле</span>
-                            </div>
-                            <div class="form__switch switch">
-                                <div class="switch__item">
-                                    <input type="radio" id="buy-field" name="action" value="buy" class="visually-hidden">
-                                    <label for="buy-field" class="switch__button">Куплю</label>
-                                </div>
-                                <div class="switch__item">
-                                    <input type="radio" id="sell-field" name="action" value="sell" class="visually-hidden">
-                                    <label for="sell-field" class="switch__button">Продам</label>
-                                </div>
-                            </div>
-                        </div>
+                <?php $form = ActiveForm::begin(
+                    [
+                        'id' => 'registerForm',
+                        'method' => 'post',
+                        'options' => [
+                            'class' => 'ticket-form__form form',
+                            'enctype' => 'multipart/form-data',
+                            'autocomplete' => 'off'
+                        ],
+                        'errorCssClass' => 'form__field--invalid'
+                    ]
+                );
+                ?>
+                <div class="ticket-form__avatar-container js-preview-container">
+                    <div class="ticket-form__avatar js-preview"></div>
+                    <?=$form->field($offerForm, 'photo',['options' => ['class' => 'ticket-form__field-avatar'],
+                            'template' => "{input}<label for=\"avatar\"><span class=\"ticket-form__text-upload\">Загрузить фото…</span>
+                            <span class=\"ticket-form__text-another\">Загрузить другое фото…</span></label>{error}",
+                            'inputOptions' => ['id' => 'avatar','class' => 'visually-hidden js-file-field', 'type' => 'file']])?>
+                <div class="ticket-form__content">
+                    <div class="ticket-form__row">
+                        <?=$form->field($offerForm, 'title',['options' => ['class' => 'form__field'],'errorOptions' => ['tag' => 'span']])->label()->textInput(['class' => 'js-field']);?>
                     </div>
 
-                    <button class="form__button btn btn--medium js-button" type="submit" disabled="">Опубликовать</button>
-                </form>
-            </div>
+                    <div class="ticket-form__row">
+                        <?= $form->field($offerForm, 'description',['options' => ['class' => 'form__field'],'errorOptions' => ['tag' => 'span']])->label()->textarea(['class' => 'js-field','rows' => '10', 'cols' => '30']) ?>
+                    </div>
+
+                    <?=$form->field($offerForm, 'publication_categories[]', ['options' => ['class' => 'ticket-form__row'],'inputOptions' => ['id' => 'category-field', 'class' => 'form__select js-multiple-select', 'data-label'=> 'Выбрать категорию публикации']])->dropDownList($publication_categories)->label(false); ?>
+                    <div class="ticket-form__row">
+                        <div class="form__field form__field--price">
+                            <?=$form->field($offerForm, 'price',['options' => ['class' => 'form__field form__field--price', 'multiple' => 'multiple'],'errorOptions' => ['tag' => 'span']])->label()->textInput(['class' => 'js-field js-price','type' => 'number']);?>
+                        </div>
+
+                        <?= $form->field($offerForm, 'is_sell')->radioList(
+                            [
+                                Publications::PUBLICATION_TYPE['buy'] => 'Куплю',
+                                Publications::PUBLICATION_TYPE['sell'] => 'Продам'
+                            ],
+                            [
+                                'class' => 'form__switch switch',
+                                'item' => function ($index, $label, $name, $checked, $value) {
+                                    return
+
+                                        Html::beginTag('div', ['class' => 'switch__item']) .
+                                        Html::radio($name, $checked, ['value' => $value, 'id' => $index, 'class' => 'visually-hidden']) .
+                                        Html::label($label, $index, ['class' => 'switch__button']) .
+                                        Html::endTag('div');
+                                }
+                            ]
+                        )->label(false) ?>
+
+                    </div>
+                </div>
+                    <?= Html::submitButton('Опубликовать', ['class' => 'form__button btn btn--medium js-button', 'disabled' => '']) ?>
+                <?php ActiveForm::end();?>
         </div>
     </section>
 </main>
