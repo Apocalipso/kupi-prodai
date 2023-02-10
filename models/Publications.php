@@ -41,9 +41,9 @@ class Publications extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['creation_time', 'title', 'description', 'publication_categories', 'creator_id', 'price'], 'required'],
+            [['creation_time', 'title', 'description', 'creator_id', 'price'], 'required'],
             [['creation_time'], 'safe'],
-            [['publication_categories', 'creator_id', 'price', 'is_sell'], 'integer'],
+            [['creator_id', 'price', 'is_sell'], 'integer'],
             [['title'], 'string', 'max' => 122],
             [['description'], 'string', 'max' => 255],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['creator_id' => 'id']],
@@ -60,7 +60,6 @@ class Publications extends \yii\db\ActiveRecord
             'creation_time' => 'Creation Time',
             'title' => 'Title',
             'description' => 'Description',
-            'publication_categories' => 'Publication Categories',
             'creator_id' => 'Creator ID',
             'price' => 'Price',
             'is_sell' => 'Is Sell',
