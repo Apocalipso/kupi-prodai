@@ -5,6 +5,7 @@ namespace app\controllers;
 use yii;
 use yii\web\Controller;
 use app\models\Publications;
+use app\models\Comments;
 
 class CommentsController extends Controller
 {
@@ -27,7 +28,8 @@ class CommentsController extends Controller
 
     public function actionDelete($id)
     {
-        echo $id;
+        Comments::findOne($id)->delete();
+        $this->redirect('/comments');
     }
 
 }
