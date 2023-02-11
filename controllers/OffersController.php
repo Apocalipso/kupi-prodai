@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Publications;
 use yii;
 use yii\web\Controller;
 use app\models\forms\OfferCreateForm;
 use app\services\OffersCreateService;
+use app\models\Comments;
 use yii\web\UploadedFile;
 
 class OffersController extends Controller
@@ -31,5 +33,23 @@ class OffersController extends Controller
         return $this->render('add',[
             'offerForm' => $offerForm,
         ]);
+    }
+
+    public function actionView($id)
+    {
+        $publication = Publications::findOne($id);
+        return $this->render('view',[
+            'publication' => $publication,
+        ]);
+    }
+
+    public function actionEdit($id)
+    {
+        echo $id . 'edit';
+    }
+
+    public function actionCategory($id)
+    {
+        echo $id . 'category';
     }
 }
