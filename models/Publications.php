@@ -67,6 +67,16 @@ class Publications extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Comments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comments::class, ['publication_id' => 'id']);
+    }
+
+    /**
      * Gets query for [[Creator]].
      *
      * @return \yii\db\ActiveQuery

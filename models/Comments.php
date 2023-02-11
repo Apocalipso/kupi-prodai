@@ -11,7 +11,9 @@ use Yii;
  * @property string $creation_time
  * @property string $text
  * @property int $user_id
+ * @property int|null $publication_id
  *
+ * @property Publications $publication
  * @property Users $user
  */
 class Comments extends \yii\db\ActiveRecord
@@ -33,8 +35,9 @@ class Comments extends \yii\db\ActiveRecord
             [['creation_time', 'text', 'user_id'], 'required'],
             [['creation_time'], 'safe'],
             [['text'], 'string'],
-            [['user_id'], 'integer'],
+            [['user_id', 'publication_id'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['publication_id'], 'exist', 'skipOnError' => true, 'targetClass' => Publications::class, 'targetAttribute' => ['publication_id' => 'id']],
         ];
     }
 
@@ -48,7 +51,18 @@ class Comments extends \yii\db\ActiveRecord
             'creation_time' => 'Creation Time',
             'text' => 'Text',
             'user_id' => 'User ID',
+            'publication_id' => 'Publication ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Publication]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPublication()
+    {
+        return $this->hasOne(Publications::class, ['id' => 'publication_id']);
     }
 
     /**

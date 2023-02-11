@@ -62,7 +62,8 @@ $config = [
             'rules' => [
                 'offers/<id:\d+>' => 'offers/view',
                 'offers/category/<id:\d+>' => 'offers/category',
-                'offers/edit/<id:\d+>' => 'offers/edit'
+                'offers/edit/<id:\d+>' => 'offers/edit',
+                'comments/delete/<id:\d+>' => 'comments/delete'
             ],
         ],
 
