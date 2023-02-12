@@ -34,7 +34,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <header class="header <?php if(!Yii::$app->user->isGuest) echo 'header--logged'?>">
   <div class="header__wrapper">
-    <a class="header__logo logo" href="main.html">
+    <a class="header__logo logo" href="/">
       <img src="/img/logo.svg" width="179" height="34" alt="Логотип Куплю Продам">
     </a>
     <nav class="header__user-menu">

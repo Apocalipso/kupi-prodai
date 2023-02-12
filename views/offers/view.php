@@ -40,17 +40,17 @@ use yii\widgets\ActiveForm;
                     <ul class="ticket__tags">
                         <li>
                             <a href="#" class="category-tile category-tile--small">
-                <span class="category-tile__image">
-                  <img src="img/cat.jpg" srcset="img/cat@2x.jpg 2x" alt="Иконка категории">
-                </span>
+                                <span class="category-tile__image">
+                                  <img src="img/cat.jpg" srcset="img/cat@2x.jpg 2x" alt="Иконка категории">
+                                </span>
                                 <span class="category-tile__label">Дом</span>
                             </a>
                         </li>
                         <li>
                             <a href="#" class="category-tile category-tile--small">
-                <span class="category-tile__image">
-                  <img src="img/cat04.jpg" srcset="img/cat04@2x.jpg 2x" alt="Иконка категории">
-                </span>
+                                <span class="category-tile__image">
+                                  <img src="img/cat04.jpg" srcset="img/cat04@2x.jpg 2x" alt="Иконка категории">
+                                </span>
                                 <span class="category-tile__label">Спорт и отдых</span>
                             </a>
                         </li>
@@ -116,6 +116,10 @@ use yii\widgets\ActiveForm;
                                 </li>
                             <?php endforeach;?>
                         </ul>
+                    </div>
+                <?php else:?>
+                    <div class="ticket__message">
+                        <p>У этой публикации еще нет ни одного комментария.</p>
                     </div>
                 <?php endif;?>
             </div>
