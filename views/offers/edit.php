@@ -4,9 +4,11 @@ use yii\helpers\Html;
 use app\models\Categories;
 use yii\helpers\ArrayHelper;
 $publication_categories = ArrayHelper::map(Categories::find()->all(), 'id', 'name');
-$selectedCategory = [];
-foreach ($publication->publicationsCategories as $category){
-    $selectedCategory[$category->category_id] = ['Selected'=>'selected'];
+if ($publication->publicationsCategories){
+    $selectedCategory = [];
+    foreach ($publication->publicationsCategories as $category){
+        $selectedCategory[$category->category_id] = ['Selected'=>'selected'];
+    }
 }
 ?>
 <main class="page-content">

@@ -63,6 +63,7 @@ $config = [
                 'offers/<id:\d+>' => 'offers/view',
                 'offers/category/<id:\d+>' => 'offers/category',
                 'offers/edit/<id:\d+>' => 'offers/edit',
+                'offers/delete/<id:\d+>' => 'offers/delete',
                 'comments/delete/<id:\d+>' => 'comments/delete'
             ],
         ],

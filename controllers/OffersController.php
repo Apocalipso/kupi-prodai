@@ -64,6 +64,15 @@ class OffersController extends Controller
         $publication = Publications::findOne($id);
         $offerForm = new OfferCreateForm();
 
+        if ($offerForm->load(Yii::$app->request->post())) {
+            if ($offerForm->validate()) {
+                //Проверяем файл загружен новый, то тогда удаляем старый, загружаем новый и новый путь к картинке
+                //удаляем все категории публикации, добавляем новые
+                //обновляем данные по найденному объекту
+                Yii::debug($offerForm);
+            }
+        }
+
         return $this->render('edit',[
             'offerForm' => $offerForm,
             'publication' => $publication,
@@ -73,5 +82,10 @@ class OffersController extends Controller
     public function actionCategory($id)
     {
         echo $id . 'category';
+    }
+
+    public function actionDelete($id)
+    {
+        echo $id . 'delete';
     }
 }
