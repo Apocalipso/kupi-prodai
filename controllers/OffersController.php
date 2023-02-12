@@ -7,8 +7,9 @@ use yii;
 use yii\web\Controller;
 use app\models\forms\OfferCreateForm;
 use app\services\OffersCreateService;
-use app\models\Comments;
+use app\models\forms\CommentForm;
 use yii\web\UploadedFile;
+use app\models\Comments;
 
 class OffersController extends Controller
 {
@@ -38,8 +39,23 @@ class OffersController extends Controller
     public function actionView($id)
     {
         $publication = Publications::findOne($id);
+        $commentForm = new CommentForm();
+
+        if ($commentForm->load(Yii::$app->request->post())) {
+            if ($commentForm->validate()) {
+                $comment = new Comments();
+                $comment->creation_time = date("Y-m-d H:i:s");;
+                $comment->text = $commentForm->text;
+                $comment->user_id = Yii::$app->user->getIdentity()->id;
+                $comment->publication_id = $id;
+                $comment->save();
+                return $this->redirect('/offers/' . $id);
+            }
+        }
+
         return $this->render('view',[
             'publication' => $publication,
+            'commentForm' => $commentForm,
         ]);
     }
 

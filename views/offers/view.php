@@ -1,3 +1,7 @@
+<?php
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+?>
 <main class="page-content">
     <section class="ticket">
         <div class="ticket__wrapper">
@@ -22,7 +26,7 @@
                     <div class="ticket__data">
                         <p>
                             <b>Дата добавления:</b>
-                            <span>20 ноября 2019</span>
+                            <span><?=Yii::$app->formatter->asRelativeTime($publication->creation_time);?></span>
                         </p>
                         <p>
                             <b>Автор:</b>
@@ -55,58 +59,65 @@
             </div>
 
 
-
-
             <div class="ticket__comments">
+                <?php if(Yii::$app->user->isGuest):?>
+                <div class="ticket__warning">
+                    <p>Отправка комментариев доступна <br>только для зарегистрированных пользователей.</p>
+                    <a href="/register" class="btn btn--big">Вход и регистрация</a>
+                </div>
+                <?php endif;?>
+
                 <h2 class="ticket__subtitle">Коментарии</h2>
+
+                <?php if(!Yii::$app->user->isGuest):?>
                 <div class="ticket__comment-form">
-                    <form action="#" method="post" class="form comment-form">
-                        <div class="comment-form__header">
-                            <a href="#" class="comment-form__avatar avatar">
-                                <img src="img/avatar.jpg" srcset="img/avatar@2x.jpg 2x" alt="Аватар пользователя">
-                            </a>
-                            <p class="comment-form__author">Вам слово</p>
-                        </div>
-                        <div class="comment-form__field">
-                            <div class="form__field">
-                                <textarea name="comment" id="comment-field" cols="30" rows="10" class="js-field">Нормальное вообще кресло! А как насч</textarea>
-                                <label for="comment-field">Текст комментария</label>
-                                <span>Обязательное поле</span>
-                            </div>
-                        </div>
-                        <button class="comment-form__button btn btn--white js-button" type="submit" disabled="">Отправить</button>
-                    </form>
+                    <?php $form = ActiveForm::begin(
+                        [
+                            'id' => 'commentadd',
+                            'method' => 'post',
+                            'options' => [
+                                'class' => 'form comment-form',
+                                'autocomplete' => 'off'
+                            ],
+                            'errorCssClass' => 'form__field--invalid'
+                        ]
+                    );?>
+                    <div class="comment-form__header">
+                        <a class="comment-form__avatar avatar">
+                            <img src="<?=Yii::$app->user->getIdentity()->avatar?>" alt="Аватар пользователя <?=Yii::$app->user->getIdentity()->name?>">
+                        </a>
+                        <p class="comment-form__author">Вам слово</p>
+                    </div>
+                    <div class="comment-form__field">
+                        <?= $form->field( $commentForm, 'text',['options' => ['class' => 'form__field'],'errorOptions' => ['tag' => 'span']])->label()->textarea(['class' => 'js-field','rows' => '10', 'cols' => '30']) ?>
+                    </div>
+                    <?= Html::submitButton('Отправить', ['class' => 'comment-form__button btn btn--white js-button', 'disabled' => '']) ?>
+                    <?php ActiveForm::end();?>
                 </div>
-                <div class="ticket__comments-list">
-                    <ul class="comments-list">
-                        <li>
-                            <div class="comment-card">
-                                <div class="comment-card__header">
-                                    <a href="#" class="comment-card__avatar avatar">
-                                        <img src="img/avatar02.jpg" srcset="img/avatar02@2x.jpg 2x" alt="Аватар пользователя">
-                                    </a>
-                                    <p class="comment-card__author">Георгий Шпиц</p>
-                                </div>
-                                <div class="comment-card__content">
-                                    <p>Что это за рухлядь? Стыдно такое даже фотографировать, не то, что&nbsp;продавать.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="comment-card">
-                                <div class="comment-card__header">
-                                    <a href="#" class="comment-card__avatar avatar">
-                                        <img src="img/avatar03.jpg" srcset="img/avatar03@2x.jpg 2x" alt="Аватар пользователя">
-                                    </a>
-                                    <p class="comment-card__author">Александр Бурый</p>
-                                </div>
-                                <div class="comment-card__content">
-                                    <p>А можете доставить мне домой? Готов доплатить 300 сверху. <br>Живу в центре прямо рядом с Моховой улицей. Готов купить прямо сейчас. Мой телефон 9032594748</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                <?php endif;?>
+
+                <?php if ($publication->comments):?>
+                    <div class="ticket__comments-list">
+                        <ul class="comments-list">
+                            <?php foreach ($publication->comments as $comment):?>
+                                <?php Yii::debug($comment);?>
+                                <li>
+                                    <div class="comment-card">
+                                        <div class="comment-card__header">
+                                            <a class="comment-card__avatar avatar">
+                                                <img src="<?=$comment->user->avatar?>" alt="Аватар пользователя <?=$comment->user->name?>">
+                                            </a>
+                                            <p class="comment-card__author"><?=$comment->user->name?></p>
+                                        </div>
+                                        <div class="comment-card__content">
+                                            <p><?=$comment->text?></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                <?php endif;?>
             </div>
             <button class="chat-button" type="button" aria-label="Открыть окно чата"></button>
         </div>
