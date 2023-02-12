@@ -40,7 +40,7 @@ $publication_categories = ArrayHelper::map(Categories::find()->all(), 'id', 'nam
                         <?= $form->field($offerForm, 'description',['options' => ['class' => 'form__field'],'errorOptions' => ['tag' => 'span']])->label()->textarea(['class' => 'js-field','rows' => '10', 'cols' => '30']) ?>
                     </div>
 
-                    <?=$form->field($offerForm, 'publication_categories[]', ['options' => ['class' => 'ticket-form__row'],'inputOptions' => ['id' => 'category-field', 'class' => 'form__select js-multiple-select', 'data-label'=> 'Выбрать категорию публикации']])->dropDownList($publication_categories)->label(false); ?>
+                    <?=$form->field($offerForm, 'publication_categories[]', ['options' => ['class' => 'ticket-form__row'],'inputOptions' => ['id' => 'category-field', 'class' => 'form__select js-multiple-select', 'data-label'=> 'Выбрать категорию публикации']])->dropDownList($publication_categories,['multiple'=>'multiple'])->label(false); ?>
                     <div class="ticket-form__row">
                         <div class="form__field form__field--price">
                             <?=$form->field($offerForm, 'price',['options' => ['class' => 'form__field form__field--price', 'multiple' => 'multiple'],'errorOptions' => ['tag' => 'span']])->label()->textInput(['class' => 'js-field js-price','type' => 'number']);?>
@@ -48,8 +48,8 @@ $publication_categories = ArrayHelper::map(Categories::find()->all(), 'id', 'nam
 
                         <?= $form->field($offerForm, 'is_sell')->radioList(
                             [
-                                Publications::PUBLICATION_TYPE['buy'] => 'Куплю',
-                                Publications::PUBLICATION_TYPE['sell'] => 'Продам'
+                                0 => 'Куплю',
+                                1 => 'Продам',
                             ],
                             [
                                 'class' => 'form__switch switch',

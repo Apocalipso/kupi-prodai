@@ -40,12 +40,6 @@ class OffersCreateService
         $publication->description = $offerForm->description;
         $publication->creator_id = Yii::$app->user->id;
         $publication->price =  $offerForm->price;
-        if($offerForm->is_sell === 'КУПЛЮ'){
-            $offerForm->is_sell = 1;
-        }
-        else{
-            $offerForm->is_sell = 0;
-        }
         $publication->is_sell = $offerForm->is_sell;
         $publication->save();
 

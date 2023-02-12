@@ -61,7 +61,13 @@ class OffersController extends Controller
 
     public function actionEdit($id)
     {
-        echo $id . 'edit';
+        $publication = Publications::findOne($id);
+        $offerForm = new OfferCreateForm();
+
+        return $this->render('edit',[
+            'offerForm' => $offerForm,
+            'publication' => $publication,
+        ]);
     }
 
     public function actionCategory($id)

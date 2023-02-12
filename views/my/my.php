@@ -17,10 +17,10 @@ use app\models\Categories;
                             <img src="<?=$publication->publicationsFiles[0]->path;?>" alt="<?=$publication->title?>">
                         </div>
                         <div class="ticket-card__info">
-                            <?php if ($publication->is_sell ===1):?>
-                                <span class="ticket-card__label">КУПЛЮ</span>
-                            <?php else:?>
+                            <?php if ($publication->is_sell === 1):?>
                                 <span class="ticket-card__label">ПРОДАМ</span>
+                            <?php else:?>
+                                <span class="ticket-card__label">КУПЛЮ</span>
                             <?php endif;?>
                             <div class="ticket-card__categories">
                                 <?php foreach ($publication->publicationsCategories as $category):?>

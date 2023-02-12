@@ -15,9 +15,9 @@ use yii\widgets\ActiveForm;
                     <div class="ticket__header">
                         <p class="ticket__price"><span class="js-sum"><?=$publication->price;?></span> ₽</p>
                         <?php if ($publication->is_sell ===1):?>
-                            <p class="ticket__action">КУПЛЮ</p>
-                        <?php else:?>
                             <p class="ticket__action">ПРОДАМ</p>
+                        <?php else:?>
+                            <p class="ticket__action">КУПЛЮ</p>
                         <?php endif;?>
                     </div>
                     <div class="ticket__desc">
