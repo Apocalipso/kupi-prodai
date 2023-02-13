@@ -24,7 +24,7 @@ use app\models\Categories;
                             <?php endif;?>
                             <div class="ticket-card__categories">
                                 <?php foreach ($publication->publicationsCategories as $category):?>
-                                    <a href="/offers/category/<?=$category->id?>"><?=Categories::findOne($category->id)->name?></a>
+                                    <a href="/offers/category/<?=$category->category_id?>"><?=Categories::findOne($category->category_id)->name;?></a>
                                 <?php endforeach;?>
                             </div>
                             <div class="ticket-card__header">

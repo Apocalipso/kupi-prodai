@@ -27,9 +27,27 @@ class OffersCreateService
         return $uploadFile;
     }
 
+    private function serviceDeleteFile($file){
+        $filepath = Yii::getAlias('@webroot') . $file;
+        if(file_exists($filepath)){
+            return unlink($filepath);
+        }
+        return false;
+    }
+
     public function saveUploadFile($file)
     {
         return $this->serviceUploadFile($file);
+    }
+
+    public function deleteFile($file)
+    {
+        return $this->serviceDeleteFile($file);
+    }
+
+    public static function deletePublicationCategories($publicationId) :void
+    {
+        Yii::$app->db->createCommand()->delete('publications_categories', ['publication_id' => $publicationId])->query();
     }
 
     public function create($offerForm, $filePath)

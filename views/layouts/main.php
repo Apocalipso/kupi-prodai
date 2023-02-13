@@ -43,7 +43,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
           <a href="/my">Публикации</a>
         </li>
         <li class="header__item">
-          <a href="/comments">Комментарии</a>
+          <a href="/my/comments">Комментарии</a>
         </li>
       </ul>
     </nav>

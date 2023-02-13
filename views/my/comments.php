@@ -30,7 +30,7 @@
                                     <div class="comment-card__content">
                                         <p><?=$comment->text?></p>
                                     </div>
-                                    <a href="/comments/delete/<?=$comment->id;?>" class="comment-card__delete js-delete" type="button">Удалить</a>
+                                    <a href="/my/comments/delete/<?=$comment->id;?>" class="comment-card__delete js-delete" type="button">Удалить</a>
                                 </div>
                             </li>
                         <?php endforeach;?>

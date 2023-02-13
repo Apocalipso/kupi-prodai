@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Publications;
+use app\models\PublicationsFiles;
 use yii;
 use yii\web\Controller;
 use app\models\forms\OfferCreateForm;
@@ -10,6 +10,8 @@ use app\services\OffersCreateService;
 use app\models\forms\CommentForm;
 use yii\web\UploadedFile;
 use app\models\Comments;
+use app\models\Publications;
+use app\models\PublicationsCategories;
 
 class OffersController extends Controller
 {
@@ -65,12 +67,44 @@ class OffersController extends Controller
         $offerForm = new OfferCreateForm();
 
         if ($offerForm->load(Yii::$app->request->post())) {
+            $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
             if ($offerForm->validate()) {
-                //Проверяем файл загружен новый, то тогда удаляем старый, загружаем новый и новый путь к картинке
-                //удаляем все категории публикации, добавляем новые
-                //обновляем данные по найденному объекту
-                Yii::debug($offerForm);
+                $service = new OffersCreateService();
+                $service::deletePublicationCategories($id);
+
+                $publication->creation_time = date("Y-m-d H:i:s");
+                $publication->title = $offerForm->title;
+                $publication->description = $offerForm->description;
+                $publication->creator_id = Yii::$app->user->id;
+                $publication->price =  $offerForm->price;
+                $publication->is_sell = $offerForm->is_sell;
+                $publication->update();
+
+
+                foreach ($offerForm->publication_categories as $category)
+                {
+                    $publicationCategories = new PublicationsCategories();
+                    $publicationCategories->category_id = $category;
+                    $publicationCategories->publication_id = $publication->id;
+                    $publicationCategories->save();
+                }
+
+                if($offerForm->photo)
+                {
+                    $service = new OffersCreateService();
+                    $service->deleteFile($publication->publicationsFiles[0]->path);
+                    PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
+
+                    $filePath = $service->saveUploadFile($offerForm->photo);
+                    $publicationFile = new PublicationsFiles();
+                    $publicationFile->creation_time = date("Y-m-d H:i:s");
+                    $publicationFile->publication_id = $publication->id;
+                    $publicationFile->name = $filePath['name'];
+                    $publicationFile->path = $filePath['path'];
+                    $publicationFile->save();
+                }
             }
+            return $this->redirect('/offers/' . $id);
         }
 
         return $this->render('edit',[
