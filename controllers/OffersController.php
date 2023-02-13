@@ -120,6 +120,12 @@ class OffersController extends Controller
 
     public function actionDelete($id)
     {
-        echo $id . 'delete';
+        $publication = Publications::findOne($id);
+        $service = new OffersCreateService();
+        $service::deletePublicationCategories($id);
+        $service->deleteFile($publication->publicationsFiles[0]->path);
+        PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
+        $publication->delete();
+        return $this->redirect('/my/');
     }
 }
