@@ -11,32 +11,20 @@ use app\models\Publications;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-//                'actions' => [
-//                    'logout' => ['post'],
-//                ],
-            ],
-        ];
+    public function beforeAction( $action ) {
+        if ( parent::beforeAction ( $action ) )
+        {
+            if ( $action->id == 'error'  && Yii::$app->response->statusCode !== 500)
+            {
+                $this->layout = 'error';
+            }
+            if (Yii::$app->response->statusCode === 500)
+            {
+                $this->layout = 'errorserver';
+            }
+            return true;
+        }
     }
-
     /**
      * {@inheritdoc}
      */
@@ -45,10 +33,6 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
@@ -70,16 +54,9 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
+    public function actionError()
     {
-        Yii::$app->user->logout();
-
-        return $this->redirect('/');
+        $this->layout = '';
     }
 
 }
