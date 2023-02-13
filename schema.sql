@@ -57,10 +57,10 @@ CREATE TABLE publications_files(
     FOREIGN KEY (publication_id) REFERENCES publications(id)
 );
 
-INSERT into categories (name, symbol_code, creation_time) 
-VALUES ('Дом', 'house', NOW()),
-('Электроника', 'electronics', NOW()),
-('Одежда', 'clothes', NOW()),
-('Спорт/отдых', 'sport', NOW()),
-('Авто', 'auto', NOW()),
-('Книги', 'books', NOW());
+INSERT into categories (name, symbol_code, creation_time, img)
+VALUES ('Дом', 'house', NOW(), '/uploads/category/cat.jpg'),
+('Электроника', 'electronics', NOW(), '/uploads/category/cat02.jpg'),
+('Одежда', 'clothes', NOW(), '/uploads/category/cat03.jpg'),
+('Спорт/отдых', 'sport', NOW(), '/uploads/category/cat04.jpg'),
+('Авто', 'auto', NOW(), '/uploads/category/cat05.jpg'),
+('Книги', 'books', NOW(), '/uploads/category/cat06.jpg');

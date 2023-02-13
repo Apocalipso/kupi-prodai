@@ -38,22 +38,16 @@ use yii\widgets\ActiveForm;
                         </p>
                     </div>
                     <ul class="ticket__tags">
-                        <li>
-                            <a href="#" class="category-tile category-tile--small">
-                                <span class="category-tile__image">
-                                  <img src="img/cat.jpg" srcset="img/cat@2x.jpg 2x" alt="Иконка категории">
-                                </span>
-                                <span class="category-tile__label">Дом</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="category-tile category-tile--small">
-                                <span class="category-tile__image">
-                                  <img src="img/cat04.jpg" srcset="img/cat04@2x.jpg 2x" alt="Иконка категории">
-                                </span>
-                                <span class="category-tile__label">Спорт и отдых</span>
-                            </a>
-                        </li>
+                        <?php foreach ($publication->publicationsCategories as $category):?>
+                            <li>
+                                <a href="/offers/category/<?=$category->category->id;?>" class="category-tile category-tile--small">
+                                    <span class="category-tile__image">
+                                      <img src="<?=$category->category->img;?>" alt="Иконка категории <?=$category->category->name;?>">
+                                    </span>
+                                    <span class="category-tile__label"><?=$category->category->name;?></span>
+                                </a>
+                            </li>
+                        <?php endforeach;?>
                     </ul>
                 </div>
             </div>
