@@ -64,47 +64,52 @@ class OffersController extends Controller
     public function actionEdit($id)
     {
         $publication = Publications::findOne($id);
-        $offerForm = new OfferCreateForm();
 
-        if ($offerForm->load(Yii::$app->request->post())) {
-            $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
-            if ($offerForm->validate()) {
-                $service = new OffersCreateService();
-                $service::deletePublicationCategories($id);
-
-                $publication->creation_time = date("Y-m-d H:i:s");
-                $publication->title = $offerForm->title;
-                $publication->description = $offerForm->description;
-                $publication->creator_id = Yii::$app->user->id;
-                $publication->price =  $offerForm->price;
-                $publication->is_sell = $offerForm->is_sell;
-                $publication->update();
-
-
-                foreach ($offerForm->publication_categories as $category)
-                {
-                    $publicationCategories = new PublicationsCategories();
-                    $publicationCategories->category_id = $category;
-                    $publicationCategories->publication_id = $publication->id;
-                    $publicationCategories->save();
-                }
-
-                if($offerForm->photo)
-                {
+        if(Yii::$app->user->id  === $publication->creator_id){
+            $offerForm = new OfferCreateForm();
+            if ($offerForm->load(Yii::$app->request->post())) {
+                $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
+                if ($offerForm->validate()) {
                     $service = new OffersCreateService();
-                    $service->deleteFile($publication->publicationsFiles[0]->path);
-                    PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
+                    $service::deletePublicationCategories($id);
 
-                    $filePath = $service->saveUploadFile($offerForm->photo);
-                    $publicationFile = new PublicationsFiles();
-                    $publicationFile->creation_time = date("Y-m-d H:i:s");
-                    $publicationFile->publication_id = $publication->id;
-                    $publicationFile->name = $filePath['name'];
-                    $publicationFile->path = $filePath['path'];
-                    $publicationFile->save();
+                    $publication->creation_time = date("Y-m-d H:i:s");
+                    $publication->title = $offerForm->title;
+                    $publication->description = $offerForm->description;
+                    $publication->creator_id = Yii::$app->user->id;
+                    $publication->price =  $offerForm->price;
+                    $publication->is_sell = $offerForm->is_sell;
+                    $publication->update();
+
+
+                    foreach ($offerForm->publication_categories as $category)
+                    {
+                        $publicationCategories = new PublicationsCategories();
+                        $publicationCategories->category_id = $category;
+                        $publicationCategories->publication_id = $publication->id;
+                        $publicationCategories->save();
+                    }
+
+                    if($offerForm->photo)
+                    {
+                        $service = new OffersCreateService();
+                        $service->deleteFile($publication->publicationsFiles[0]->path);
+                        PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
+
+                        $filePath = $service->saveUploadFile($offerForm->photo);
+                        $publicationFile = new PublicationsFiles();
+                        $publicationFile->creation_time = date("Y-m-d H:i:s");
+                        $publicationFile->publication_id = $publication->id;
+                        $publicationFile->name = $filePath['name'];
+                        $publicationFile->path = $filePath['path'];
+                        $publicationFile->save();
+                    }
                 }
+                return $this->redirect('/offers/' . $id);
             }
-            return $this->redirect('/offers/' . $id);
+        }
+        else{
+            throw new yii\web\ForbiddenHttpException('У вас нет прав, чтобы редактировать данную публикацию',403);
         }
 
         return $this->render('edit',[
@@ -121,11 +126,16 @@ class OffersController extends Controller
     public function actionDelete($id)
     {
         $publication = Publications::findOne($id);
-        $service = new OffersCreateService();
-        $service::deletePublicationCategories($id);
-        $service->deleteFile($publication->publicationsFiles[0]->path);
-        PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
-        $publication->delete();
-        return $this->redirect('/my/');
+        if(Yii::$app->user->id  === $publication->creator_id){
+            $service = new OffersCreateService();
+            $service::deletePublicationCategories($id);
+            $service->deleteFile($publication->publicationsFiles[0]->path);
+            PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
+            $publication->delete();
+            return $this->redirect('/my/');
+        }
+        else{
+            throw new yii\web\ForbiddenHttpException('У вас нет прав, чтобы удалять данную публикацию',403);
+        }
     }
 }

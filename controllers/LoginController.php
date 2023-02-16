@@ -8,10 +8,31 @@ use yii\web\Controller;
 use app\models\Users;
 use app\services\UserCreateService;
 use yii\web\Response;
+use yii\filters\AccessControl;
 use yii\authclient\clients\VKontakte;
 
 class LoginController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'denyCallback' => function () {
+                    return $this->redirect(['/']);
+                },
+                'only' => ['index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['?'],
+                    ],
+                ]
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
         $loginForm = new LoginForm();

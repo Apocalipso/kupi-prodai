@@ -54,9 +54,11 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionError()
+    public function actionLogout()
     {
-        $this->layout = '';
+        Yii::$app->user->logout();
+
+        return $this->redirect('/');
     }
 
 }

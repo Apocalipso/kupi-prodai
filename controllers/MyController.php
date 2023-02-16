@@ -37,7 +37,13 @@ class MyController extends Controller
 
     public function actionDelete($id)
     {
-        Comments::findOne($id)->delete();
-        $this->redirect('/my/comments');
+        $comment = Comments::findOne($id);
+        if(Yii::$app->user->id  === $comment->user_id){
+            $comment->delete();
+            $this->redirect('/my/comments');
+        }
+        else{
+            throw new yii\web\ForbiddenHttpException('У вас нет прав, чтобы удалить данный комментарий',403);
+        }
     }
 }

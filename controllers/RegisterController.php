@@ -8,10 +8,32 @@ use app\models\forms\RegisterForm;
 use yii\base\Exception;
 use yii\web\UploadedFile;
 use app\services\UserCreateService;
+use yii\filters\AccessControl;
 
 
 class RegisterController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+
+                'denyCallback' => function () {
+                    return $this->redirect(['/']);
+                },
+                'only' => ['index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['?']
+                    ]
+                ]
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
         $registerForm = new RegisterForm();
