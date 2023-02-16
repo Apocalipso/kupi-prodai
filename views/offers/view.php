@@ -94,7 +94,6 @@ use yii\widgets\ActiveForm;
                     <div class="ticket__comments-list">
                         <ul class="comments-list">
                             <?php foreach ($publication->comments as $comment):?>
-                                <?php Yii::debug($comment);?>
                                 <li>
                                     <div class="comment-card">
                                         <div class="comment-card__header">

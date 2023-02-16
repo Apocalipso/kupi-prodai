@@ -54,9 +54,9 @@ class SiteController extends Controller
             ->orderBy(['category_id' => SORT_ASC])
             ->groupBy(['category_id'])->all();
 
-        $mostComments = Comments::find()
-            ->groupBy(['publication_id', 'id'])
-            ->orderBy(['creation_time' => SORT_DESC])
+        $mostComments = Comments::find()->select(['publication_id'])
+            ->groupBy(['publication_id'])
+            ->orderBy(['publication_id' => SORT_DESC])
             ->limit(8)->all();
 
         return $this->render('index', [
