@@ -22,6 +22,9 @@ class OffersController extends Controller
 
     public function actionAdd()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/login']);
+        }
         $offerForm = new OfferCreateForm();
         if ($offerForm->load(Yii::$app->request->post())) {
             $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
@@ -63,6 +66,10 @@ class OffersController extends Controller
 
     public function actionEdit($id)
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/login']);
+        }
+
         $publication = Publications::findOne($id);
 
         if(Yii::$app->user->id  === $publication->creator_id){

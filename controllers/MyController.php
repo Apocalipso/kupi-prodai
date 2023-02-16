@@ -11,6 +11,10 @@ class MyController extends Controller
 {
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/login']);
+        }
+
         $myPublications = Publications::find()->andWhere(['creator_id'=>Yii::$app->user->id])->all();
 
         return $this->render('my', [
@@ -20,6 +24,10 @@ class MyController extends Controller
 
     public function actionComments()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/login']);
+        }
+
         $myPublications = Publications::find()->andWhere(['creator_id'=>Yii::$app->user->id])->all();
         $publicationWithComments = [];
         foreach ($myPublications as $publication){
