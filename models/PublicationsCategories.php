@@ -16,6 +16,7 @@ use Yii;
  */
 class PublicationsCategories extends \yii\db\ActiveRecord
 {
+    public $count;
     /**
      * {@inheritdoc}
      */

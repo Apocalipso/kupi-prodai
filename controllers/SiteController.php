@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Publications;
+use app\models\PublicationsCategories;
+use yii\db\Query;
 
 class SiteController extends Controller
 {
@@ -44,13 +46,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $allPublication = Publications::find()->all();
+        $allPublication = Publications::find()->orderBy(['creation_time' => SORT_DESC])->limit(8)->all();
+
         if (count($allPublication) === 0){
             return $this->render('index-empty');
         }
 
+        $categories = PublicationsCategories::find()->select(['category_id', 'count' => 'count(publication_id)'])->orderBy(['category_id' => SORT_ASC])->groupBy(['category_id'])->all();
+        Yii::debug($categories);
+
         return $this->render('index', [
             'allPublication' => $allPublication,
+            'categories' => $categories,
         ]);
     }
 
