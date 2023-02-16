@@ -58,6 +58,7 @@ $this->title = 'Куплю Продам';
       </ul>
     </div>
   </section>
+  <?php if ($mostComments):?>
   <section class="tickets-list">
     <h2 class="visually-hidden">Самые обсуждаемые предложения</h2>
     <div class="tickets-list__wrapper">
@@ -148,4 +149,5 @@ $this->title = 'Куплю Продам';
       </ul>
     </div>
   </section>
+<?php endif;?>
 </main>

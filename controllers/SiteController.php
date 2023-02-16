@@ -3,13 +3,10 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
 use app\models\Publications;
 use app\models\PublicationsCategories;
-use yii\db\Query;
+use app\models\Comments;
 
 class SiteController extends Controller
 {
@@ -52,12 +49,20 @@ class SiteController extends Controller
             return $this->render('index-empty');
         }
 
-        $categories = PublicationsCategories::find()->select(['category_id', 'count' => 'count(publication_id)'])->orderBy(['category_id' => SORT_ASC])->groupBy(['category_id'])->all();
-        Yii::debug($categories);
+        $categories = PublicationsCategories::find()
+            ->select(['category_id', 'count' => 'count(publication_id)'])
+            ->orderBy(['category_id' => SORT_ASC])
+            ->groupBy(['category_id'])->all();
+
+        $mostComments = Comments::find()
+            ->groupBy(['publication_id', 'id'])
+            ->orderBy(['creation_time' => SORT_DESC])
+            ->limit(8)->all();
 
         return $this->render('index', [
             'allPublication' => $allPublication,
             'categories' => $categories,
+            'mostComments' => $mostComments,
         ]);
     }
 
