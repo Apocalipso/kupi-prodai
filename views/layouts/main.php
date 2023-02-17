@@ -9,6 +9,8 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\widgets\ActiveForm;
+use app\models\forms\SearchForm;
 
 AppAsset::register($this);
 
@@ -47,11 +49,22 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         </li>
       </ul>
     </nav>
-    <form class="search" method="get" action="#" autocomplete="off">
-      <input type="search" name="query" placeholder="Поиск" aria-label="Поиск">
+
+    <?php $searchForm = new SearchForm();
+
+    $form = ActiveForm::begin([
+        'method' => 'get',
+        'action' => ['/search'],
+        'options' => [
+            'class' => 'search search-active',
+            'autocomplete' => 'off',
+        ],
+    ]); ?>
+      <?= $form->field($searchForm, 'search',['options' => ['tag' => false]])->textInput(['type' => 'search', 'placeholder' => 'Поиск'])->label(false) ?>
       <div class="search__icon"></div>
       <div class="search__close-btn"></div>
-    </form>
+      <?php ActiveForm::end(); ?>
+
     <?php if(Yii::$app->user->getIdentity()):?>
         <a class="header__avatar avatar" href="/site/logout">
           <img src="<?=Yii::$app->user->getIdentity()->avatar?>" alt="Аватар пользователя">

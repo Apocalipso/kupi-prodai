@@ -5,6 +5,8 @@
 /** @var string $message */
 /** @var Exception$exception */
 
+use yii\widgets\ActiveForm;
+use app\models\forms\SearchForm;
 use yii\helpers\Html;
 
 $this->title = $name;
@@ -25,11 +27,20 @@ $this->title = $name;
                 <a href="/">Главная страница</a>
             </li>
         </ul>
-        <form class="error__search search search--small" method="get" action="#" autocomplete="off">
-            <input type="search" name="query" placeholder="Поиск" aria-label="Поиск">
-            <div class="search__icon"></div>
-            <div class="search__close-btn"></div>
-        </form>
+        <?php $searchForm = new SearchForm();
+
+        $form = ActiveForm::begin([
+            'method' => 'get',
+            'action' => ['/search'],
+            'options' => [
+                'class' => 'error__search search search--small',
+                'autocomplete' => 'off',
+            ],
+        ]); ?>
+        <?= $form->field($searchForm, 'search',['options' => ['tag' => false]])->textInput(['type' => 'search', 'placeholder' => 'Поиск'])->label(false) ?>
+        <div class="search__icon"></div>
+        <div class="search__close-btn"></div>
+        <?php ActiveForm::end(); ?>
         <a class="error__logo logo" href="/">
             <img src="/img/logo.svg" width="179" height="34" alt="Логотип Куплю Продам">
         </a>
