@@ -9,9 +9,13 @@ use app\models\forms\OfferCreateForm;
 use app\services\OffersCreateService;
 use app\models\forms\CommentForm;
 use yii\web\UploadedFile;
+use yii\data\Pagination;
 use app\models\Comments;
 use app\models\Publications;
 use app\models\PublicationsCategories;
+use app\models\Categories;
+use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 
 class OffersController extends Controller
 {
@@ -127,7 +131,51 @@ class OffersController extends Controller
 
     public function actionCategory($id)
     {
-        echo $id . 'category';
+        $currentCategory = Categories::findOne($id);
+
+        if (!$currentCategory) {
+            throw new NotFoundHttpException('Такой категории не существует', 404);
+        }
+
+        $countOffers = PublicationsCategories::find()->select('publication_id')->where(['category_id' => $id])->count();
+
+        $categories = PublicationsCategories::find()
+            ->select(['category_id', 'count' => 'count(publication_id)'])
+            ->orderBy(['category_id' => SORT_ASC])
+            ->groupBy(['category_id'])->all();
+
+        $query = Publications::find()
+            ->rightJoin('publications_categories', '`publications_categories`.`publication_id` = `publications`.`id`')
+            ->where(['category_id' => $id]);
+
+        $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+        'pagination' => [
+         'pageSize' => 8,
+        ],
+        'sort' => [
+         'defaultOrder' => [
+           'creation_time' => SORT_DESC,
+         ]
+        ],
+        ]);
+
+        $pagination = new Pagination([
+            'totalCount' => $countOffers,
+            'pageSize' => 8,
+            'forcePageParam' => false,
+            'pageSizeParam' => false
+        ]);
+
+        return $this->render('categories', [
+            'pagination' => $pagination,
+            'currentCategory' => $currentCategory,
+            'query' => $query,
+            'dataProvider' => $dataProvider,
+            'categories' => $categories,
+            'countOffers' => $countOffers,
+        ]);
+
     }
 
     public function actionDelete($id)
