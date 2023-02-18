@@ -61,6 +61,7 @@ class Users extends ActiveRecord implements IdentityInterface
         return [
             [['creation_time', 'name', 'email', 'password'], 'required'],
             [['creation_time'], 'safe'],
+            [['moderator'], 'integer'],
             [['name'], 'string', 'max' => 122],
             [['email', 'avatar', 'password'], 'string', 'max' => 64],
             [['email'], 'unique'],
@@ -79,6 +80,7 @@ class Users extends ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'avatar' => 'Avatar',
             'password' => 'Password',
+            'moderator' => 'Модератор'
         ];
     }
 

@@ -46,7 +46,7 @@ class MyController extends Controller
     public function actionDelete($id)
     {
         $comment = Comments::findOne($id);
-        if(Yii::$app->user->id  === $comment->user_id){
+        if(Yii::$app->user->id  === $comment->user_id || Yii::$app->user->getIdentity()->moderator === 1){
             $comment->delete();
             $this->redirect('/my/comments');
         }

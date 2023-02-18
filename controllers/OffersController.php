@@ -48,6 +48,10 @@ class OffersController extends Controller
     public function actionView($id)
     {
         $publication = Publications::findOne($id);
+        if (!$publication) {
+            throw new NotFoundHttpException('Такого объявления не существует', 404);
+        }
+
         $commentForm = new CommentForm();
 
         if ($commentForm->load(Yii::$app->request->post())) {
@@ -181,7 +185,7 @@ class OffersController extends Controller
     public function actionDelete($id)
     {
         $publication = Publications::findOne($id);
-        if(Yii::$app->user->id  === $publication->creator_id){
+        if(Yii::$app->user->id  === $publication->creator_id || Yii::$app->user->getIdentity()->moderator === 1 ){
             $service = new OffersCreateService();
             $service::deletePublicationCategories($id);
             $service->deleteFile($publication->publicationsFiles[0]->path);
