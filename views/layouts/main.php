@@ -51,7 +51,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </nav>
 
     <?php $searchForm = new SearchForm();
-
+    $searchWord = '';
+    if (Yii::$app->request->get('SearchForm')){
+        $searchWord = Yii::$app->request->get('SearchForm')['search'];
+    }
     $form = ActiveForm::begin([
         'method' => 'get',
         'action' => ['/search'],
@@ -60,7 +63,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             'autocomplete' => 'off',
         ],
     ]); ?>
-      <?= $form->field($searchForm, 'search',['options' => ['tag' => false]])->textInput(['type' => 'search', 'placeholder' => 'Поиск'])->label(false) ?>
+      <?= $form->field($searchForm, 'search',['options' => ['tag' => false]])->textInput(['type' => 'search', 'placeholder' => 'Поиск', 'value' => $searchWord ])->label(false) ?>
       <div class="search__icon"></div>
       <div class="search__close-btn"></div>
       <?php ActiveForm::end(); ?>
