@@ -77,10 +77,12 @@ class OffersController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['/login']);
         }
-
         $publication = Publications::findOne($id);
+        if (!$publication) {
+            throw new NotFoundHttpException('Такая публикация не найдена', 404);
+        }
 
-        if(Yii::$app->user->id  === $publication->creator_id){
+        if(Yii::$app->user->id  === $publication->creator_id || Yii::$app->user->getIdentity()->moderator === 1){
             $offerForm = new OfferCreateForm();
             if ($offerForm->load(Yii::$app->request->post())) {
                 $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
@@ -91,7 +93,6 @@ class OffersController extends Controller
                     $publication->creation_time = date("Y-m-d H:i:s");
                     $publication->title = $offerForm->title;
                     $publication->description = $offerForm->description;
-                    $publication->creator_id = Yii::$app->user->id;
                     $publication->price =  $offerForm->price;
                     $publication->is_sell = $offerForm->is_sell;
                     $publication->update();

@@ -28,7 +28,7 @@ use app\models\Categories;
                                 <?php endforeach;?>
                             </div>
                             <div class="ticket-card__header">
-                                <h3 class="ticket-card__title"><a href="/offers/<?=$publication->id?>"><?=$publication->title?></a></h3>
+                                <h3 class="ticket-card__title"><a href="/offers/edit/<?=$publication->id?>"><?=$publication->title?></a></h3>
                                 <p class="ticket-card__price"><span class="js-sum"><?=$publication->price?></span> ₽</p>
                             </div>
                         </div>
