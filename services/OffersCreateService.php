@@ -9,27 +9,21 @@ use app\models\PublicationsCategories;
 class OffersCreateService
 {
     private $path = 'uploads/offers';
-
     private function serviceUploadFile($file)
     {
         $fileName = $file->name;
         $fileServerName = uniqid($file->baseName). '.' . $file->extension;
-
         if (!is_dir($this->path)) {
             mkdir($this->path,0777,true);
         }
-
         $file->saveAs($this->path . '/' . $fileServerName);
-
         $uploadFile = ['name' => $fileName, 'path' => '/' . $this->path . '/' .  $fileServerName];
-
-
         return $uploadFile;
     }
 
     private function serviceDeleteFile($file){
         $filepath = Yii::getAlias('@webroot') . $file;
-        if(file_exists($filepath)){
+        if (file_exists($filepath)) {
             return unlink($filepath);
         }
         return false;
@@ -60,23 +54,18 @@ class OffersCreateService
         $publication->price =  $offerForm->price;
         $publication->is_sell = $offerForm->is_sell;
         $publication->save();
-
-
-        foreach ($offerForm->publication_categories as $category)
-        {
+        foreach ($offerForm->publication_categories as $category) {
             $publicationCategories = new PublicationsCategories();
             $publicationCategories->category_id = $category;
             $publicationCategories->publication_id = $publication->id;
             $publicationCategories->save();
         }
-
         $publicationFile = new PublicationsFiles();
         $publicationFile->creation_time = date("Y-m-d H:i:s");
         $publicationFile->publication_id = $publication->id;
         $publicationFile->name = $filePath['name'];
         $publicationFile->path = $filePath['path'];
         $publicationFile->save();
-
         return;
     }
 }

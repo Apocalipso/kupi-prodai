@@ -16,13 +16,11 @@ class SearchController extends Controller
     {
         $allPublication = Publications::find()->orderBy(['creation_time' => SORT_DESC])->limit(8)->all();
         $foundOffers = null;
-
         if (Yii::$app->request->getIsGet()) {
             $search = Yii::$app->request->get('SearchForm')['search'];
             $foundOffers = Publications::find()
                 ->where(['like','title', $search]);
         }
-
         $dataProvider = new ActiveDataProvider([
             'query' => $foundOffers,
             'pagination' => [
@@ -34,14 +32,12 @@ class SearchController extends Controller
                 ]
             ],
         ]);
-
         $pagination = new Pagination([
             'totalCount' => $foundOffers->count(),
             'pageSize' => 8,
             'forcePageParam' => false,
             'pageSizeParam' => false
         ]);
-
         return $this->render('search', [
             'allPublication' => $allPublication,
             'dataProvider' => $dataProvider,

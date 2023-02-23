@@ -18,7 +18,6 @@ class RegisterController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-
                 'denyCallback' => function () {
                     return $this->redirect(['/']);
                 },
@@ -40,15 +39,12 @@ class RegisterController extends Controller
         if ($registerForm->load(Yii::$app->request->post())) {
             $registerForm->file = UploadedFile::getInstance($registerForm, 'file');
             if ($registerForm->validate()) {
-
                 $service  = new UserCreateService();
                 $avatarPath = $service->saveUploadFile($registerForm->file);
                 $service -> create($registerForm, $avatarPath);
                 return $this->redirect('/login', 301);
-
             }
         }
-
         return $this->render('registration', ['registerForm' => $registerForm]);
     }
 }

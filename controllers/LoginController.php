@@ -36,7 +36,7 @@ class LoginController extends Controller
     public function actionIndex()
     {
         $loginForm = new LoginForm();
-        if ( $loginForm->load(Yii::$app->request->post())){
+        if ( $loginForm->load(Yii::$app->request->post())) {
             if ($loginForm->validate()) {
                 $user = Users::findOne(['email' => $loginForm->email]);
                 Yii::$app->user->login( $user);
@@ -49,7 +49,8 @@ class LoginController extends Controller
 
     }
 
-    public function actionAuth(){
+    public function actionAuth()
+    {
         $url = Yii::$app->authClientCollection->getClient("vkontakte")->buildAuthUrl();
         Yii::$app->getResponse()->redirect($url);
     }
@@ -62,7 +63,7 @@ class LoginController extends Controller
         $userAttributes = $vkClient->getUserAttributes();
 
         $user = Users::findOne(['vk_id' => $userAttributes['user_id']]);
-        if ($user){
+        if ($user) {
             Yii::$app->user->login($user);
             return $this->redirect('/');
         }

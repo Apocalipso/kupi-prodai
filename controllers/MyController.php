@@ -31,11 +31,11 @@ class MyController extends Controller
         $myPublications = Publications::find()->andWhere(['creator_id'=>Yii::$app->user->id])->all();
         $publicationWithComments = [];
         foreach ($myPublications as $publication){
-            if($publication->comments){
+            if($publication->comments) {
                 array_push($publicationWithComments, $publication);
             }
         }
-        if(!$publicationWithComments){
+        if(!$publicationWithComments) {
             return $this->render('empty-comments');
         }
         return $this->render('comments',[
@@ -46,11 +46,10 @@ class MyController extends Controller
     public function actionDelete($id)
     {
         $comment = Comments::findOne($id);
-        if(Yii::$app->user->id  === $comment->user_id || Yii::$app->user->getIdentity()->moderator === 1){
+        if (Yii::$app->user->id  === $comment->user_id || Yii::$app->user->getIdentity()->moderator === 1) {
             $comment->delete();
             $this->redirect('/my/comments');
-        }
-        else{
+        } else {
             throw new yii\web\ForbiddenHttpException('У вас нет прав, чтобы удалить данный комментарий',403);
         }
     }

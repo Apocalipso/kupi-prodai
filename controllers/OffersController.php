@@ -32,7 +32,6 @@ class OffersController extends Controller
         $offerForm = new OfferCreateForm();
         if ($offerForm->load(Yii::$app->request->post())) {
             $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
-
             if ($offerForm->validate()) {
                 $service = new OffersCreateService();
                 $filepath = $service->saveUploadFile($offerForm->photo);
@@ -51,9 +50,7 @@ class OffersController extends Controller
         if (!$publication) {
             throw new NotFoundHttpException('Такого объявления не существует', 404);
         }
-
         $commentForm = new CommentForm();
-
         if ($commentForm->load(Yii::$app->request->post())) {
             if ($commentForm->validate()) {
                 $comment = new Comments();
@@ -65,7 +62,6 @@ class OffersController extends Controller
                 return $this->redirect('/offers/' . $id);
             }
         }
-
         return $this->render('view',[
             'publication' => $publication,
             'commentForm' => $commentForm,
@@ -81,37 +77,29 @@ class OffersController extends Controller
         if (!$publication) {
             throw new NotFoundHttpException('Такая публикация не найдена', 404);
         }
-
-        if(Yii::$app->user->id  === $publication->creator_id || Yii::$app->user->getIdentity()->moderator === 1){
+        if (Yii::$app->user->id  === $publication->creator_id || Yii::$app->user->getIdentity()->moderator === 1) {
             $offerForm = new OfferCreateForm();
             if ($offerForm->load(Yii::$app->request->post())) {
                 $offerForm->photo = UploadedFile::getInstance($offerForm, 'photo');
                 if ($offerForm->validate()) {
                     $service = new OffersCreateService();
                     $service::deletePublicationCategories($id);
-
                     $publication->creation_time = date("Y-m-d H:i:s");
                     $publication->title = $offerForm->title;
                     $publication->description = $offerForm->description;
                     $publication->price =  $offerForm->price;
                     $publication->is_sell = $offerForm->is_sell;
                     $publication->update();
-
-
-                    foreach ($offerForm->publication_categories as $category)
-                    {
+                    foreach ($offerForm->publication_categories as $category) {
                         $publicationCategories = new PublicationsCategories();
                         $publicationCategories->category_id = $category;
                         $publicationCategories->publication_id = $publication->id;
                         $publicationCategories->save();
                     }
-
-                    if($offerForm->photo)
-                    {
+                    if ($offerForm->photo) {
                         $service = new OffersCreateService();
                         $service->deleteFile($publication->publicationsFiles[0]->path);
                         PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
-
                         $filePath = $service->saveUploadFile($offerForm->photo);
                         $publicationFile = new PublicationsFiles();
                         $publicationFile->creation_time = date("Y-m-d H:i:s");
@@ -123,11 +111,9 @@ class OffersController extends Controller
                 }
                 return $this->redirect('/offers/' . $id);
             }
-        }
-        else{
+        } else {
             throw new yii\web\ForbiddenHttpException('У вас нет прав, чтобы редактировать данную публикацию',403);
         }
-
         return $this->render('edit',[
             'offerForm' => $offerForm,
             'publication' => $publication,
@@ -137,41 +123,34 @@ class OffersController extends Controller
     public function actionCategory($id)
     {
         $currentCategory = Categories::findOne($id);
-
         if (!$currentCategory) {
             throw new NotFoundHttpException('Такой категории не существует', 404);
         }
-
         $countOffers = PublicationsCategories::find()->select('publication_id')->where(['category_id' => $id])->count();
-
         $categories = PublicationsCategories::find()
             ->select(['category_id', 'count' => 'count(publication_id)'])
             ->orderBy(['category_id' => SORT_ASC])
             ->groupBy(['category_id'])->all();
-
         $query = Publications::find()
             ->rightJoin('publications_categories', '`publications_categories`.`publication_id` = `publications`.`id`')
             ->where(['category_id' => $id]);
-
         $dataProvider = new ActiveDataProvider([
-        'query' => $query,
-        'pagination' => [
-         'pageSize' => 8,
-        ],
-        'sort' => [
-         'defaultOrder' => [
-           'creation_time' => SORT_DESC,
-         ]
-        ],
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'creation_time' => SORT_DESC,
+                ]
+            ],
         ]);
-
         $pagination = new Pagination([
             'totalCount' => $countOffers,
             'pageSize' => 8,
             'forcePageParam' => false,
             'pageSizeParam' => false
         ]);
-
         return $this->render('categories', [
             'pagination' => $pagination,
             'currentCategory' => $currentCategory,
@@ -180,21 +159,19 @@ class OffersController extends Controller
             'categories' => $categories,
             'countOffers' => $countOffers,
         ]);
-
     }
 
     public function actionDelete($id)
     {
         $publication = Publications::findOne($id);
-        if(Yii::$app->user->id  === $publication->creator_id || Yii::$app->user->getIdentity()->moderator === 1 ){
+        if (Yii::$app->user->id  === $publication->creator_id || Yii::$app->user->getIdentity()->moderator === 1 ) {
             $service = new OffersCreateService();
             $service::deletePublicationCategories($id);
             $service->deleteFile($publication->publicationsFiles[0]->path);
             PublicationsFiles::findOne(['publication_id' => $publication->id])->delete();
             $publication->delete();
             return $this->redirect('/my/');
-        }
-        else{
+        } else {
             throw new yii\web\ForbiddenHttpException('У вас нет прав, чтобы удалять данную публикацию',403);
         }
     }

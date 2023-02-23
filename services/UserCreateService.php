@@ -7,21 +7,15 @@ use app\models\Users;
 class UserCreateService
 {
     private $path = 'uploads/avatar';
-
     private function serviceUploadFile($file)
     {
         $fileName = $file->name;
         $fileServerName = uniqid($file->baseName). '.' . $file->extension;
-
         if (!is_dir($this->path)) {
             mkdir($this->path,0777,true);
         }
-
         $file->saveAs($this->path . '/' . $fileServerName);
-
         $uploadFile = ['name' => $fileName, 'path' =>  $fileServerName];
-
-
         return $uploadFile;
     }
 
@@ -41,12 +35,12 @@ class UserCreateService
         return $user->save();
     }
 
-    public function createVk($userAttributes){
+    public function createVk($userAttributes)
+    {
         $newUser = new Users();
         $newUser->creation_time = date("Y-m-d H:i:s");
         $newUser->name = $userAttributes["first_name"] . ' ' . $userAttributes["last_name"];
         $newUser->email = $userAttributes["email"];
-
         $newUser->password = Yii::$app->getSecurity()->generatePasswordHash('asdfgh');
         $newUser->vk_id = $userAttributes["user_id"];
         $newUser->save();
