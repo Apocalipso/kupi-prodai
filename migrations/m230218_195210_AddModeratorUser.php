@@ -22,19 +22,5 @@ class m230218_195210_AddModeratorUser extends Migration
     {
         $this->dropColumn('users', 'moderator');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230218_195210_AddModeratorUser cannot be reverted.\n";
-
-        return false;
-    }
-    */
+    
 }

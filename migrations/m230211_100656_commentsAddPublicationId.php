@@ -35,18 +35,4 @@ class m230211_100656_commentsAddPublicationId extends Migration
         $this->dropColumn('comments', 'publication_id');
     }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230211_100656_commentsAddPublicationId cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
