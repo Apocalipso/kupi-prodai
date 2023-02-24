@@ -33,6 +33,7 @@ class RegisterController extends Controller
         ];
     }
 
+    /*Регистрация пользователя*/
     public function actionIndex()
     {
         $registerForm = new RegisterForm();

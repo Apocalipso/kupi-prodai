@@ -9,7 +9,12 @@ use app\models\PublicationsCategories;
 class OffersCreateService
 {
     private $path = 'uploads/offers';
-    private function serviceUploadFile($file)
+
+    /** Метод сохраняет файл
+     * @param object $file
+     * @return array
+     */
+    private function serviceUploadFile($file): array
     {
         $fileName = $file->name;
         $fileServerName = uniqid($file->baseName). '.' . $file->extension;
@@ -21,7 +26,12 @@ class OffersCreateService
         return $uploadFile;
     }
 
-    private function serviceDeleteFile($file){
+    /** Метод удаляет файл
+     * @param string $file
+     * @return bool
+     */
+    private function serviceDeleteFile($file): bool
+    {
         $filepath = Yii::getAlias('@webroot') . $file;
         if (file_exists($filepath)) {
             return unlink($filepath);
@@ -29,22 +39,37 @@ class OffersCreateService
         return false;
     }
 
-    public function saveUploadFile($file)
+    /** Метод возвращает массив параметров сохранненого файла
+     * @param object $file
+     * @return array
+     */
+    public function saveUploadFile($file): array
     {
         return $this->serviceUploadFile($file);
     }
 
-    public function deleteFile($file)
+    /** Метод отправляет файл в приватный метод
+     * @param string $file
+     * @return bool
+     */
+    public function deleteFile($file): bool
     {
         return $this->serviceDeleteFile($file);
     }
 
+    /** Метод удаляет категории публикации
+     * @param int $publicationId
+     */
     public static function deletePublicationCategories($publicationId) :void
     {
         Yii::$app->db->createCommand()->delete('publications_categories', ['publication_id' => $publicationId])->query();
     }
 
-    public function create($offerForm, $filePath)
+    /** Метод сохраняет публикацию и файл публикации
+     * @param object $offerForm
+     * @param array $filePath
+     */
+    public function create($offerForm, $filePath): bool
     {
         $publication = new Publications();
         $publication->creation_time = date("Y-m-d H:i:s");

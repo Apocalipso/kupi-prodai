@@ -9,6 +9,7 @@ use app\models\Comments;
 
 class MyController extends Controller
 {
+    /*Просмотр публикаций*/
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
@@ -22,6 +23,7 @@ class MyController extends Controller
         ]);
     }
 
+    /*Просмотр комментариев*/
     public function actionComments()
     {
         if (Yii::$app->user->isGuest) {
@@ -43,6 +45,7 @@ class MyController extends Controller
         ]);
     }
 
+    /*Удаление комментария*/
     public function actionDelete($id)
     {
         $comment = Comments::findOne($id);

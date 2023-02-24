@@ -7,7 +7,11 @@ use app\models\Users;
 class UserCreateService
 {
     private $path = 'uploads/avatar';
-    private function serviceUploadFile($file)
+    /** Метод сохраняет файл аватара на сервере и возвращает массив с файлом
+     * @param object $file
+     * @return array
+     */
+    private function serviceUploadFile($file): array
     {
         $fileName = $file->name;
         $fileServerName = uniqid($file->baseName). '.' . $file->extension;
@@ -19,12 +23,23 @@ class UserCreateService
         return $uploadFile;
     }
 
-    public function saveUploadFile($file)
+    /**метод
+     * Метод перенаправляет файл в приватный метод
+     * @param array $file
+     * @return array
+     */
+    public function saveUploadFile($file): array
     {
         return $this->serviceUploadFile($file);
     }
 
-    public function create($registerForm, $avatarPath)
+    /**
+     * Метод создает пользователя
+     * @param object $registerForm
+     * @param array $avatarPath
+     * @return bool
+     */
+    public function create($registerForm, $avatarPath): bool
     {
         $user = new Users;
         $user->creation_time = date('Y-m-d G:i:s');
@@ -35,7 +50,12 @@ class UserCreateService
         return $user->save();
     }
 
-    public function createVk($userAttributes)
+    /**
+     * Метод создает пользователя с вк
+     * @param array $userAttributes
+     * @return Users
+     */
+    public function createVk($userAttributes) :Users
     {
         $newUser = new Users();
         $newUser->creation_time = date("Y-m-d H:i:s");

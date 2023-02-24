@@ -12,6 +12,7 @@ use yii\data\Pagination;
 
 class SearchController extends Controller
 {
+    /*Поиск публикаций*/
     public function actionIndex()
     {
         $allPublication = Publications::find()->orderBy(['creation_time' => SORT_DESC])->limit(8)->all();
