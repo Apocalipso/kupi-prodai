@@ -1,6 +1,7 @@
 <?php
 use yii\widgets\LinkPager;
 use yii\widgets\ListView;
+use yii\helpers\Url;
 ?>
 <main class="page-content">
     <section class="categories-list">
@@ -8,7 +9,7 @@ use yii\widgets\ListView;
         <ul class="categories-list__wrapper">
             <?php foreach ($categories as $category):?>
                 <li class="categories-list__item">
-                    <a href="/offers/category/<?=$category->category_id;?>" class="category-tile <?php if ($category->category_id === $currentCategory->id) echo ' category-tile--default';?>">
+                    <a href="<?= Url::to(['/offers/category/', 'id' => $category->category_id]);?>" class="category-tile <?php if ($category->category_id === $currentCategory->id) echo ' category-tile--default';?>">
                       <span class="category-tile__image">
                         <img src="<?=$category->category->img?>" alt="Иконка категории <?=$category->category->name?>">
                       </span>

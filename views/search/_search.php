@@ -1,3 +1,6 @@
+<?php
+use yii\helpers\Url;
+?>
 <li class="tickets-list__item">
     <div class="ticket-card ticket-card--color06">
         <div class="ticket-card__img">
@@ -11,12 +14,12 @@
             <?php endif;?>
             <div class="ticket-card__categories">
                 <?php foreach ($model->publicationsCategories as $category):?>
-                    <a href="/offers/category/<?=$category->category_id?>"><?=$category->category->name?></a>
+                    <a href="<?= Url::to(['/offers/category/', 'id' => $category->category_id]);?>"><?=$category->category->name?></a>
                 <?php endforeach;?>
             </div>
             <div class="ticket-card__header">
                 <h3 class="ticket-card__title">
-                    <a href="/offers/<?=$model->id;?>"><?=$model->title;?></a>
+                    <a href="<?= Url::to(['/offers/view', 'id' => $model->id]);?>"><?=$model->title;?></a>
                 </h3>
                 <p class="ticket-card__price"><span class="js-sum"><?=$model->price;?></span> ₽</p>
             </div>

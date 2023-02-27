@@ -11,6 +11,7 @@ use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 use yii\widgets\ActiveForm;
 use app\models\forms\SearchForm;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 
@@ -42,10 +43,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <nav class="header__user-menu">
       <ul class="header__list">
         <li class="header__item">
-          <a href="/my">Публикации</a>
+          <a href="<?= Url::to(['/my']);?>">Публикации</a>
         </li>
         <li class="header__item">
-          <a href="/my/comments">Комментарии</a>
+          <a href="<?= Url::to(['/my/comments']);?>">Комментарии</a>
         </li>
       </ul>
     </nav>
@@ -69,11 +70,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
       <?php ActiveForm::end(); ?>
 
     <?php if(Yii::$app->user->getIdentity()):?>
-        <a class="header__avatar avatar" href="/site/logout">
+        <a class="header__avatar avatar" href="<?= Url::to(['/site/logout']);?>">
           <img src="<?=Yii::$app->user->getIdentity()->avatar?>" alt="Аватар пользователя">
         </a>
     <?php endif;?>
-    <a class="header__input" href="/login">Вход и регистрация</a>
+    <a class="header__input" href="<?= Url::to(['/login']);?>">Вход и регистрация</a>
   </div>
 </header>
 
@@ -90,17 +91,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
       <p class="page-footer__copyright">© <?=date("Y");?> Проект Академии</p>
     </div>
     <div class="page-footer__col">
-      <a href="#" class="page-footer__logo logo">
+      <a href="<?= Url::to(['/']);?>" class="page-footer__logo logo">
         <img src="/img/logo.svg" width="179" height="35" alt="Логотип Куплю Продам">
       </a>
     </div>
     <div class="page-footer__col">
       <ul class="page-footer__nav">
         <li>
-          <a href="/login">Вход и регистрация</a>
+          <a href="<?= Url::to(['/login']);?>">Вход и регистрация</a>
         </li>
         <li>
-          <a href="/offers/add">Создать объявление</a>
+          <a href="<?= Url::to(['/offers/add']);?>">Создать объявление</a>
         </li>
       </ul>
     </div>

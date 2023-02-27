@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 ?>
 <main class="page-content">
     <section class="ticket">
@@ -40,7 +41,7 @@ use yii\widgets\ActiveForm;
                     <ul class="ticket__tags">
                         <?php foreach ($publication->publicationsCategories as $category):?>
                             <li>
-                                <a href="/offers/category/<?=$category->category->id;?>" class="category-tile category-tile--small">
+                                <a href="<?= Url::to(['/offers/category/', 'id' => $category->category_id]);?>" class="category-tile category-tile--small">
                                     <span class="category-tile__image">
                                       <img src="<?=$category->category->img;?>" alt="Иконка категории <?=$category->category->name;?>">
                                     </span>

@@ -1,3 +1,6 @@
+<?php
+use yii\helpers\Url;
+?>
 <main class="page-content">
     <section class="comments">
         <div class="comments__wrapper">
@@ -5,7 +8,7 @@
             <?php foreach ($publications as $publication):?>
                 <div class="comments__block">
                     <div class="comments__header">
-                        <a href="/offers/<?=$publication->id;?>" class="announce-card">
+                        <a href="<?= Url::to(['/offers/view', 'id' => $publication->id]);?>" class="announce-card">
                             <h2 class="announce-card__title"><?=$publication->title;?></h2>
                             <span class="announce-card__info">
                               <span class="announce-card__price">₽ <?=$publication->price;?></span>
@@ -30,7 +33,7 @@
                                     <div class="comment-card__content">
                                         <p><?=$comment->text?></p>
                                     </div>
-                                    <a href="/my/comments/delete/<?=$comment->id;?>" class="comment-card__delete js-delete" type="button">Удалить</a>
+                                    <a href="<?= Url::to(['/my/delete', 'id' => $comment->id]);?>" class="comment-card__delete js-delete" type="button">Удалить</a>
                                 </div>
                             </li>
                         <?php endforeach;?>

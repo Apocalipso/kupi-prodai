@@ -1,6 +1,7 @@
 <?php
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 <link rel="stylesheet" href="/css/style.min.css">
 <main class="page-content">
@@ -21,7 +22,7 @@ use yii\helpers\Html;
         ?>
         <div class="sign-up__title">
             <h2>Регистрация</h2>
-            <a class="sign-up__link" href="/login">Вход</a>
+            <a class="sign-up__link" href="<?= Url::to(['/login']);?>">Вход</a>
         </div>
         <div class="sign-up__avatar-container js-preview-container">
             <div class="sign-up__avatar js-preview"></div>
@@ -43,7 +44,7 @@ use yii\helpers\Html;
         </div>
 
         <?= Html::submitButton('Создать аккаунт', ['class' => 'sign-up__button btn btn--medium js-button', 'disabled' => 'disabled']) ?>
-        <a class="btn btn--small btn--flex btn--white" href="/login/auth?authclient=vkontakte">
+        <a class="btn btn--small btn--flex btn--white" href="<?= Url::to(['login/auth', 'authclient' => 'vkontakte']);?>">
             Войти через
             <span class="icon icon--vk"></span>
         </a>

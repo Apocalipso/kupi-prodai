@@ -1,12 +1,13 @@
 <?php
 use app\models\Categories;
+use yii\helpers\Url;
 ?>
 <main class="page-content">
     <section class="tickets-list">
         <h2 class="visually-hidden">Самые новые предложения</h2>
         <div class="tickets-list__wrapper">
             <div class="tickets-list__header">
-                <a href="/offers/add" class="tickets-list__btn btn btn--big"><span>Новая публикация</span></a>
+                <a href="<?= Url::to(['/offers/add']);?>" class="tickets-list__btn btn btn--big"><span>Новая публикация</span></a>
             </div>
             <?php if($myPublications):?>
             <ul>
@@ -24,15 +25,15 @@ use app\models\Categories;
                             <?php endif;?>
                             <div class="ticket-card__categories">
                                 <?php foreach ($publication->publicationsCategories as $category):?>
-                                    <a href="/offers/category/<?=$category->category_id?>"><?=Categories::findOne($category->category_id)->name;?></a>
+                                    <a href="<?= Url::to(['/offers/category/', 'id' => $category->category_id]);?>"><?=Categories::findOne($category->category_id)->name;?></a>
                                 <?php endforeach;?>
                             </div>
                             <div class="ticket-card__header">
-                                <h3 class="ticket-card__title"><a href="/offers/edit/<?=$publication->id?>"><?=$publication->title?></a></h3>
+                                <h3 class="ticket-card__title"><a href="<?= Url::to(['/offers/edit', 'id' => $publication->id]);?>"><?=$publication->title?></a></h3>
                                 <p class="ticket-card__price"><span class="js-sum"><?=$publication->price?></span> ₽</p>
                             </div>
                         </div>
-                        <a href="/offers/delete/<?=$publication->id?>" class="ticket-card__del js-delete" type="button">Удалить</a>
+                        <a href="<?= Url::to(['/offers/delete', 'id' => $publication->id]);?>" class="ticket-card__del js-delete" type="button">Удалить</a>
                     </div>
                 </li>
                 <?php endforeach;?>

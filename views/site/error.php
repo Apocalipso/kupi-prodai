@@ -8,6 +8,7 @@
 use yii\widgets\ActiveForm;
 use app\models\forms\SearchForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = $name;
 ?>
@@ -18,13 +19,13 @@ $this->title = $name;
         <h2 class="error__subtitle"><?= nl2br(Html::encode($message)) ?></h2>
         <ul class="error__list">
             <li class="error__item">
-                <a href="/login">Вход и регистрация</a>
+                <a href="<?= Url::to(['/login']);?>">Вход и регистрация</a>
             </li>
             <li class="error__item">
-                <a href="/offers/add">Новая публикация</a>
+                <a href="<?= Url::to(['/offers/add']);?>">Новая публикация</a>
             </li>
             <li class="error__item">
-                <a href="/">Главная страница</a>
+                <a href="<?= Url::to(['/']);?>">Главная страница</a>
             </li>
         </ul>
         <?php $searchForm = new SearchForm();
