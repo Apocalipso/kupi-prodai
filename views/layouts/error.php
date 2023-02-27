@@ -37,8 +37,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
     <?=$content?>
 
-<script src="/js/vendor.js"></script>
-<script src="/js/main.js"></script>
 <?php $this->endBody() ?>
 </body>
 </html>
