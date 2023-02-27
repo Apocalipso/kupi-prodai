@@ -90,7 +90,6 @@ class OffersCreateService
         $publicationFile->publication_id = $publication->id;
         $publicationFile->name = $filePath['name'];
         $publicationFile->path = $filePath['path'];
-        $publicationFile->save();
-        return;
+        return $publicationFile->save();
     }
 }

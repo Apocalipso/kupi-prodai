@@ -36,8 +36,7 @@ use yii\widgets\ListView;
                         'class' => 'pagination',
                     ],
                     'itemOptions' => [
-                        'tag' => 'li',
-                        'class' => 'tickets-list__item',
+                        'tag' => false,
                     ]
                 ]
             ) ?>

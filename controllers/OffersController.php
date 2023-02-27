@@ -24,7 +24,9 @@ class OffersController extends Controller
         return $this->render('offers');
     }
 
-    /*Добавление публикации*/
+    /**
+     * Добавление публикации
+     */
     public function actionAdd()
     {
         if (Yii::$app->user->isGuest) {
@@ -45,7 +47,9 @@ class OffersController extends Controller
         ]);
     }
 
-    /*Просмотр публикации*/
+    /**
+     * Просмотр публикации
+     */
     public function actionView($id)
     {
         $publication = Publications::findOne($id);
@@ -70,7 +74,9 @@ class OffersController extends Controller
         ]);
     }
 
-    /*Редактирование публикации*/
+    /**
+     * Редактирование публикации
+     */
     public function actionEdit($id)
     {
         if (Yii::$app->user->isGuest) {
@@ -123,7 +129,9 @@ class OffersController extends Controller
         ]);
     }
 
-    /*просмотр категории*/
+    /**
+     * просмотр категории
+     */
     public function actionCategory($id)
     {
         $currentCategory = Categories::findOne($id);
@@ -165,7 +173,9 @@ class OffersController extends Controller
         ]);
     }
 
-    /*удаляет публикацию и ее категории*/
+    /**
+     * удаляет публикацию и ее категории
+     */
     public function actionDelete($id)
     {
         $publication = Publications::findOne($id);
